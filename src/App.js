@@ -11,7 +11,7 @@ import Signin from "./components/Signin/Signin";
 import "./App.css";
 
 const app = new Clarifai.App({
-  apiKey: process.env.CLARIFAI_KEY,
+  apiKey: "c744a0d69cfa4cafbbd2e38f4ee73d44",
 });
 
 const particleOptions = {
