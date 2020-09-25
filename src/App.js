@@ -17,29 +17,72 @@ const app = new Clarifai.App({
 const particleOptions = {
   particles: {
     number: {
-      value: 100,
+      value: 160,
       density: {
+        enable: false,
+      },
+    },
+    size: {
+      value: 3,
+      random: true,
+      anim: {
+        speed: 4,
+        size_min: 0.3,
+      },
+    },
+    line_linked: {
+      enable: false,
+    },
+    move: {
+      random: true,
+      speed: 1,
+      direction: "top",
+      out_mode: "out",
+    },
+  },
+  interactivity: {
+    events: {
+      onhover: {
         enable: true,
-        value_area: 800,
+        mode: "bubble",
+      },
+      onclick: {
+        enable: true,
+        mode: "repulse",
+      },
+    },
+    modes: {
+      bubble: {
+        distance: 250,
+        duration: 2,
+        size: 0,
+        opacity: 0,
+      },
+      repulse: {
+        distance: 400,
+        duration: 4,
       },
     },
   },
 };
+
+const initialState = {
+  input: "",
+  imageUrl: "",
+  box: {},
+  route: "signin",
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
+};
+
 class App extends Component {
-  state = {
-    input: "",
-    imageUrl: "",
-    box: {},
-    route: "signin",
-    isSignedIn: false,
-    user: {
-      id: "",
-      name: "",
-      email: "",
-      entries: 0,
-      joined: "",
-    },
-  };
+  state = initialState;
 
   loadUser = (user) => {
     this.setState({
@@ -100,7 +143,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === "signout") {
-      this.setState({ isSignedIn: false });
+      this.setState(initialState);
     } else if (route === "home") {
       this.setState({ isSignedIn: true });
     }
