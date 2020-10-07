@@ -14,7 +14,7 @@ class Signin extends Component {
   };
 
   onSubmit = () => {
-    fetch("http://localhost:7000/signin", {
+    fetch("https://fathomless-ravine-48999.herokuapp.com/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -24,7 +24,6 @@ class Signin extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.id) {
           this.props.loadUser(data);
           this.props.onRouteChange("home");

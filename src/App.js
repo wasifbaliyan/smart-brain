@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Clarifai from "clarifai";
 import Particles from "react-particles-js";
 import Navigation from "./components/Navigation/Navigation";
 import Logo from "./components/Logo/Logo";
@@ -9,10 +8,6 @@ import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Register from "./components/Register/Register";
 import Signin from "./components/Signin/Signin";
 import "./App.css";
-
-const app = new Clarifai.App({
-  apiKey: "c744a0d69cfa4cafbbd2e38f4ee73d44",
-});
 
 const particleOptions = {
   particles: {
@@ -120,11 +115,17 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
-    app.models
-      .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    fetch(`https://fathomless-ravine-48999.herokuapp.com/imageurl`, {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        input: this.state.input,
+      }),
+    })
+      .then((response) => response.json())
       .then((response) => {
         if (response) {
-          fetch("http://localhost:7000/image", {
+          fetch(`https://fathomless-ravine-48999.herokuapp.com/image`, {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -134,7 +135,8 @@ class App extends Component {
             .then((response) => response.json())
             .then((count) => {
               this.setState(Object.assign(this.state.user, { entries: count }));
-            });
+            })
+            .catch((err) => console.log(err));
         }
         return this.displayFaceBox(this.calculateFaceLocation(response));
       })
